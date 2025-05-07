@@ -1,0 +1,363 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Enrichment Service",
+        "title": "API Service",
+        "contact": {},
+        "version": "1.0.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/api",
+    "paths": {
+        "/users": {
+            "get": {
+                "description": "получение пользователей по фильтру",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Получение пользователей",
+                "parameters": [
+                    {
+                        "description": "Фильтры для получения пользователей",
+                        "name": "filters",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/models.Filters"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.User"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "error\": \"Invalid format",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "error\": \"error message",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Создание нового пользователя",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Создание пользователя",
+                "parameters": [
+                    {
+                        "description": "User Input",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UserInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.FullUser"
+                        }
+                    },
+                    "400": {
+                        "description": "error\": \"Invalid format",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "error\": \"error message",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}": {
+            "put": {
+                "description": "Изменение данных пользователя по некоторым данным",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Изменение данных пользователя",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "User",
+                        "name": "newUserData",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.FullUser"
+                        }
+                    },
+                    "400": {
+                        "description": "error\": \"Invalid format",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "error\": \"error message",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "удаление пользователя по id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Удаление пользователя",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "message\": \"User deleted",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "error\": \"Invalid format",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "error\": \"error message",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.Filters": {
+            "description": "получение людей по фильтрам",
+            "type": "object",
+            "required": [
+                "name",
+                "surname"
+            ],
+            "properties": {
+                "age": {
+                    "type": "integer",
+                    "example": 25
+                },
+                "gender": {
+                    "type": "string",
+                    "example": "male"
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Donald"
+                },
+                "nation": {
+                    "type": "string",
+                    "example": "US"
+                },
+                "offset": {
+                    "type": "integer"
+                },
+                "patronymic": {
+                    "type": "string",
+                    "example": "Duck"
+                },
+                "surname": {
+                    "type": "string",
+                    "example": "Trump"
+                }
+            }
+        },
+        "models.FullUser": {
+            "description": "Полные данные пользователя после обогащения",
+            "type": "object",
+            "required": [
+                "name",
+                "surname"
+            ],
+            "properties": {
+                "age": {
+                    "type": "integer",
+                    "example": 25
+                },
+                "gender": {
+                    "type": "string",
+                    "example": "male"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Donald"
+                },
+                "nation": {
+                    "type": "string",
+                    "example": "US"
+                },
+                "patronymic": {
+                    "type": "string",
+                    "example": "Duck"
+                },
+                "surname": {
+                    "type": "string",
+                    "example": "Trump"
+                }
+            }
+        },
+        "models.User": {
+            "description": "Данные пользователя с дополнительной информацией",
+            "type": "object",
+            "required": [
+                "name",
+                "surname"
+            ],
+            "properties": {
+                "age": {
+                    "type": "integer",
+                    "example": 25
+                },
+                "gender": {
+                    "type": "string",
+                    "example": "male"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Donald"
+                },
+                "nation": {
+                    "type": "string",
+                    "example": "US"
+                },
+                "patronymic": {
+                    "type": "string",
+                    "example": "Duck"
+                },
+                "surname": {
+                    "type": "string",
+                    "example": "Trump"
+                }
+            }
+        },
+        "models.UserInput": {
+            "description": "Входные данные для создания пользователя",
+            "type": "object",
+            "required": [
+                "name",
+                "surname"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "Donald"
+                },
+                "patronymic": {
+                    "type": "string",
+                    "example": "Duck"
+                },
+                "surname": {
+                    "type": "string",
+                    "example": "Trump"
+                }
+            }
+        }
+    }
+}

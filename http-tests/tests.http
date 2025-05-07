@@ -1,0 +1,34 @@
+@host=localhost
+@port=8080
+@url=http://{{host}}:{{port}}/api
+
+### Get Users
+GET {{url}}/users?age=66&limit=2
+Accept: application/json
+
+### Create User
+POST {{url}}/users
+Content-Type: application/json
+Accept: application/json
+
+{
+    "name": "Joe",
+    "surname": "Doe"
+}
+
+### Change User
+PUT {{url}}/users/104
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Donald",
+  "surname": "Trump",
+  "age": 1,
+  "gender": "male",
+  "nation": "RU"
+}
+
+### Delete User
+DELETE {{url}}/users/104
+Accept: application/json
