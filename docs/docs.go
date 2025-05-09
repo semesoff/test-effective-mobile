@@ -30,12 +30,52 @@ const docTemplate = `{
                 "summary": "Получение пользователей",
                 "parameters": [
                     {
-                        "description": "Фильтры для получения пользователей",
-                        "name": "filters",
-                        "in": "body",
-                        "schema": {
-                            "$ref": "#/definitions/models.Filters"
-                        }
+                        "type": "integer",
+                        "example": 25,
+                        "name": "age",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "male",
+                        "name": "gender",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 3,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "Donald",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "US",
+                        "name": "nation",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 2,
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "Duck",
+                        "name": "patronymic",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "Trump",
+                        "name": "surname",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -44,7 +84,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.User"
+                                "$ref": "#/definitions/response.FullUser"
                             }
                         }
                     },
@@ -87,7 +127,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.UserInput"
+                            "$ref": "#/definitions/request.UserInput"
                         }
                     }
                 ],
@@ -95,7 +135,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/models.FullUser"
+                            "$ref": "#/definitions/response.FullUser"
                         }
                     },
                     "400": {
@@ -146,7 +186,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "$ref": "#/definitions/request.User"
                         }
                     }
                 ],
@@ -154,7 +194,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.FullUser"
+                            "$ref": "#/definitions/response.FullUser"
                         }
                     },
                     "400": {
@@ -231,13 +271,9 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "models.Filters": {
-            "description": "получение людей по фильтрам",
+        "request.User": {
+            "description": "Данные пользователя с дополнительной информацией",
             "type": "object",
-            "required": [
-                "name",
-                "surname"
-            ],
             "properties": {
                 "age": {
                     "type": "integer",
@@ -247,9 +283,6 @@ const docTemplate = `{
                     "type": "string",
                     "example": "male"
                 },
-                "limit": {
-                    "type": "integer"
-                },
                 "name": {
                     "type": "string",
                     "example": "Donald"
@@ -257,9 +290,6 @@ const docTemplate = `{
                 "nation": {
                     "type": "string",
                     "example": "US"
-                },
-                "offset": {
-                    "type": "integer"
                 },
                 "patronymic": {
                     "type": "string",
@@ -271,13 +301,31 @@ const docTemplate = `{
                 }
             }
         },
-        "models.FullUser": {
-            "description": "Полные данные пользователя после обогащения",
+        "request.UserInput": {
+            "description": "Входные данные для создания пользователя",
             "type": "object",
             "required": [
                 "name",
                 "surname"
             ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "Donald"
+                },
+                "patronymic": {
+                    "type": "string",
+                    "example": "Duck"
+                },
+                "surname": {
+                    "type": "string",
+                    "example": "Trump"
+                }
+            }
+        },
+        "response.FullUser": {
+            "description": "Полные данные пользователя с id",
+            "type": "object",
             "properties": {
                 "age": {
                     "type": "integer",
@@ -298,62 +346,6 @@ const docTemplate = `{
                 "nation": {
                     "type": "string",
                     "example": "US"
-                },
-                "patronymic": {
-                    "type": "string",
-                    "example": "Duck"
-                },
-                "surname": {
-                    "type": "string",
-                    "example": "Trump"
-                }
-            }
-        },
-        "models.User": {
-            "description": "Данные пользователя с дополнительной информацией",
-            "type": "object",
-            "required": [
-                "name",
-                "surname"
-            ],
-            "properties": {
-                "age": {
-                    "type": "integer",
-                    "example": 25
-                },
-                "gender": {
-                    "type": "string",
-                    "example": "male"
-                },
-                "name": {
-                    "type": "string",
-                    "example": "Donald"
-                },
-                "nation": {
-                    "type": "string",
-                    "example": "US"
-                },
-                "patronymic": {
-                    "type": "string",
-                    "example": "Duck"
-                },
-                "surname": {
-                    "type": "string",
-                    "example": "Trump"
-                }
-            }
-        },
-        "models.UserInput": {
-            "description": "Входные данные для создания пользователя",
-            "type": "object",
-            "required": [
-                "name",
-                "surname"
-            ],
-            "properties": {
-                "name": {
-                    "type": "string",
-                    "example": "Donald"
                 },
                 "patronymic": {
                     "type": "string",

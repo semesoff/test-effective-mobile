@@ -28,7 +28,7 @@ func (sm *ServerManager) Start() {
 	// Initialize gin Engine
 	router := gin.New()
 	router.Use(middleware.LoggingMiddleware())
-	gin.SetMode(gin.ReleaseMode)
+	gin.SetMode(gin.DebugMode)
 
 	// Initialize config
 	var configProvider config.Config = config.NewConfigManager()

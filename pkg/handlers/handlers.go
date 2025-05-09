@@ -95,7 +95,7 @@ func (h *HandlersManager) DeleteUser(c *gin.Context) {
 // @Produce json
 // @Param id path string true "User ID"
 // @Param newUserData body request.User true "User"
-// @Success 200 {object} models.FullUser
+// @Success 200 {object} response.FullUser
 // @Failure 400 {object} map[string]string "error": "Invalid format"
 // @Failure 500 {object} map[string]string "error": "error message"
 // @Router /users/{id} [put]

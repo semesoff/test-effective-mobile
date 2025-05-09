@@ -1,7 +1,7 @@
 basePath: /api
 definitions:
-  models.Filters:
-    description: получение людей по фильтрам
+  request.User:
+    description: Данные пользователя с дополнительной информацией
     properties:
       age:
         example: 25
@@ -9,16 +9,25 @@ definitions:
       gender:
         example: male
         type: string
-      limit:
-        type: integer
       name:
         example: Donald
         type: string
       nation:
         example: US
         type: string
-      offset:
-        type: integer
+      patronymic:
+        example: Duck
+        type: string
+      surname:
+        example: Trump
+        type: string
+    type: object
+  request.UserInput:
+    description: Входные данные для создания пользователя
+    properties:
+      name:
+        example: Donald
+        type: string
       patronymic:
         example: Duck
         type: string
@@ -29,8 +38,8 @@ definitions:
     - name
     - surname
     type: object
-  models.FullUser:
-    description: Полные данные пользователя после обогащения
+  response.FullUser:
+    description: Полные данные пользователя с id
     properties:
       age:
         example: 25
@@ -53,50 +62,6 @@ definitions:
       surname:
         example: Trump
         type: string
-    required:
-    - name
-    - surname
-    type: object
-  models.User:
-    description: Данные пользователя с дополнительной информацией
-    properties:
-      age:
-        example: 25
-        type: integer
-      gender:
-        example: male
-        type: string
-      name:
-        example: Donald
-        type: string
-      nation:
-        example: US
-        type: string
-      patronymic:
-        example: Duck
-        type: string
-      surname:
-        example: Trump
-        type: string
-    required:
-    - name
-    - surname
-    type: object
-  models.UserInput:
-    description: Входные данные для создания пользователя
-    properties:
-      name:
-        example: Donald
-        type: string
-      patronymic:
-        example: Duck
-        type: string
-      surname:
-        example: Trump
-        type: string
-    required:
-    - name
-    - surname
     type: object
 host: localhost:8080
 info:
@@ -111,11 +76,38 @@ paths:
       - application/json
       description: получение пользователей по фильтру
       parameters:
-      - description: Фильтры для получения пользователей
-        in: body
-        name: filters
-        schema:
-          $ref: '#/definitions/models.Filters'
+      - example: 25
+        in: query
+        name: age
+        type: integer
+      - example: male
+        in: query
+        name: gender
+        type: string
+      - example: 3
+        in: query
+        name: limit
+        type: integer
+      - example: Donald
+        in: query
+        name: name
+        type: string
+      - example: US
+        in: query
+        name: nation
+        type: string
+      - example: 2
+        in: query
+        name: offset
+        type: integer
+      - example: Duck
+        in: query
+        name: patronymic
+        type: string
+      - example: Trump
+        in: query
+        name: surname
+        type: string
       produces:
       - application/json
       responses:
@@ -123,7 +115,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/models.User'
+              $ref: '#/definitions/response.FullUser'
             type: array
         "400":
           description: 'error": "Invalid format'
@@ -150,14 +142,14 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/models.UserInput'
+          $ref: '#/definitions/request.UserInput'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/models.FullUser'
+            $ref: '#/definitions/response.FullUser'
         "400":
           description: 'error": "Invalid format'
           schema:
@@ -223,14 +215,14 @@ paths:
         name: newUserData
         required: true
         schema:
-          $ref: '#/definitions/models.User'
+          $ref: '#/definitions/request.User'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.FullUser'
+            $ref: '#/definitions/response.FullUser'
         "400":
           description: 'error": "Invalid format'
           schema:
